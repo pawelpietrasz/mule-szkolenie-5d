@@ -1,0 +1,34 @@
+#%RAML 1.0
+title: World Weather Forecast
+mediaType: application/json
+
+types: 
+  forecast:
+    properties: 
+      temperature: 
+        type: number
+      date:
+        type: date-only
+
+securitySchemes: 
+  basic:
+    description: |
+      This API supports Basic Authentication
+    type: Basic Authentication
+
+/weather:
+  /countries:
+    /{country}:
+      /cities:
+        /{city}:
+          get:
+            securedBy: [basic]
+            queryParameters: 
+              scale: 
+                enum: [Celsius, Kelvin]
+              when:
+                type: date-only
+                required: false
+            responses:
+              200:
+                body: forecast
